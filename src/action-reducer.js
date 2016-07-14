@@ -1,7 +1,6 @@
 'use strict';
 
 import _ from 'lodash/fp';
-import deepAssign from 'deep-assign';
 import invariant from 'invariant';
 
 // For updating multiple UI variables at once.  Each variable might be part of
