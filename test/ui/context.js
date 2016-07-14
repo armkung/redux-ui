@@ -1,6 +1,6 @@
 'use strict';
 
-import { assert } from 'chai'; 
+import { assert } from 'chai';
 import React, { Component } from 'react';
 import TestUtils from 'react-addons-test-utils';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
@@ -26,7 +26,7 @@ describe('UI state context', () => {
       isValid: true
     };
     const UITest = ui({ state: uiState })(Test);
- 
+
     it('component gets given expected props', () => {
       const c = renderAndFind(<UITest />, Test);
       assert(typeof c.props.updateUI === 'function', 'has updateUI');
@@ -150,7 +150,7 @@ describe('UI state context', () => {
 
         assert(parent.props.ui.name === 'parent');
         assert(child.props.ui.name === 'child');
-      }); 
+      });
 
       it('parent updates context separately from parent', () => {
         const tree = render(UIChildJSX);
@@ -160,7 +160,7 @@ describe('UI state context', () => {
         parent.updateContext('foobar');
         assert(parent.props.ui.name === 'foobar');
         assert(child.props.ui.name === 'child');
-      }); 
+      });
 
 
       it('child updates context separately from parent', () => {
@@ -171,7 +171,7 @@ describe('UI state context', () => {
         child.updateChildContext('foobar');
         assert(parent.props.ui.name === 'parent');
         assert(child.props.ui.name === 'foobar');
-      }); 
+      });
     });
 
   });
