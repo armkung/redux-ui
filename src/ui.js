@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 const { any, array, func, node, object, string } = PropTypes;
 import { bindActionCreators } from 'redux';
+import _ from 'lodash/fp';
 import { connect } from 'react-redux';
 import invariant from 'invariant';
 import { updateUI, massUpdateUI, setDefaultUI, mountUI, unmountUI } from './action-reducer';
@@ -119,7 +120,7 @@ export default function ui(key, opts = {}) {
         componentWillMount() {
           // If the component's UI subtree doesn't exist and we have state to
           // set ensure we update our global store with the current state.
-          if (this.props.ui.getIn(this.uiPath) === undefined && opts.state) {
+          if (_.get(this.uiPath, this.props.ui) === undefined && opts.state) {
             const state = this.getDefaultUIState(opts.state);
             this.context.store.dispatch(mountUI(this.uiPath, state, opts.reducer));
           }
@@ -135,7 +136,7 @@ export default function ui(key, opts = {}) {
           // accessing the current global UI state; the parent will not
           // necessarily always pass down child state.
           const ui = getUIState(this.context.store.getState());
-          if (ui.getIn(this.uiPath) === undefined && opts.state) {
+          if (_.get(this.uiPath, ui) === undefined && opts.state) {
             const state = this.getDefaultUIState(opts.state, nextProps);
             this.props.setDefaultUI(this.uiPath, state);
           }
@@ -281,7 +282,7 @@ export default function ui(key, opts = {}) {
           const ui = getUIState(this.context.store.getState());
 
           return Object.keys(this.uiVars).reduce((props, k) => {
-            props[k] = ui.getIn(this.uiVars[k].concat(k));
+            props[k] = _.get(this.uiVars[k].concat(k), ui);
             return props;
           }, {}) || {};
         }

@@ -7,14 +7,14 @@ import {
 } from '../../src/action-reducer.js';
 
 import { assert } from 'chai';
-import { is, Map } from 'immutable';
+import _ from 'lodash/fp';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import { defaultState } from '../../src/action-reducer.js';
 
 const customReducer = (state, action) => {
   if (action.type === 'CUSTOM_ACTION_TYPE') {
-    return state.set('isHooked', true);
+    return _.set('isHooked', true, state);
   }
   return state;
 }
@@ -22,13 +22,13 @@ const enhancedReducer = reducerEnhancer(customReducer);
 
 describe('reducerEnhancer', () => {
   let enhancedStore;
-  
+
   beforeEach( () => {
     enhancedStore = createStore(combineReducers({ ui: enhancedReducer }));
   });
 
   it('delegates to the default reducer', () => {
-    assert.isTrue(is(enhancedStore.getState().ui, defaultState));
+    assert.isTrue(_.isEqual(enhancedStore.getState().ui, defaultState));
 
     enhancedStore.dispatch({
       type: UPDATE_UI_STATE,
@@ -40,18 +40,18 @@ describe('reducerEnhancer', () => {
     });
 
     assert.isTrue(
-      is(
+      _.isEqual(
         enhancedStore.getState().ui,
-        new Map({
-          __reducers: new Map(),
-          a: new Map({ foo: 'bar' })
-        })
+        {
+          __reducers: {},
+          a: { foo: 'bar' }
+        }
       )
     );
   });
 
   it('intercepts custom actions', () => {
-    assert.isTrue(is(enhancedStore.getState().ui, defaultState));
+    assert.isTrue(_.isEqual(enhancedStore.getState().ui, defaultState));
 
     enhancedStore.dispatch({
       type: 'CUSTOM_ACTION_TYPE',
@@ -60,12 +60,12 @@ describe('reducerEnhancer', () => {
       }
     });
     assert.isTrue(
-      is(
+      _.isEqual(
         enhancedStore.getState().ui,
-        new Map({
-          __reducers: new Map(),
+        {
+          __reducers: {},
           isHooked: true
-        })
+        }
       )
     );
   });

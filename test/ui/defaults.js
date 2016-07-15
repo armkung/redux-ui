@@ -1,11 +1,10 @@
 
 'use strict';
 
-import { assert } from 'chai'; 
+import { assert } from 'chai';
 import React, { Component } from 'react';
 import TestUtils from 'react-addons-test-utils';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
-import { Map } from 'immutable';
 
 import ui, { reducer } from '../../src';
 import { render, renderAndFind } from '../utils/render.js';
@@ -29,15 +28,14 @@ describe('Default UI state variables', () => {
       isValid: true
     };
     const UITest = ui({ state: uiState })(Test);
- 
+
     it('component gets given expected props', () => {
       const c = renderAndFind(<UITest passedProp='foo' />, Test);
       assert.equal(c.props.ui.calculated, 'foo');
       assert.equal(calcProps.passedProp, 'foo');
-      assert.equal(typeof calcState.ui, typeof Map());
+      assert.equal(typeof calcState.ui, typeof {});
     });
 
   });
 
 });
-
