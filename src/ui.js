@@ -1,7 +1,5 @@
 'use strict';
-
-import React, { Component, PropTypes } from 'react';
-const { any, array, func, node, object, string } = PropTypes;
+const { any, array, func, node, object, string } = React.PropTypes;
 import { bindActionCreators } from 'redux';
 import _ from 'lodash/fp';
 import { connect } from 'react-redux';
@@ -55,7 +53,7 @@ export default function ui(key, opts = {}) {
        *
        * All state will be blown away on navigation by default.
        */
-      class UI extends Component {
+      class UI extends React.Component {
 
         constructor(props, ctx, queue) {
           super(props, ctx, queue);
@@ -135,11 +133,11 @@ export default function ui(key, opts = {}) {
           // We can only see if this component's state is blown away by
           // accessing the current global UI state; the parent will not
           // necessarily always pass down child state.
-          const ui = getUIState(this.context.store.getState());
-          if (_.get(this.uiPath, ui) === undefined && opts.state) {
-            const state = this.getDefaultUIState(opts.state, nextProps);
-            this.props.setDefaultUI(this.uiPath, state);
-          }
+          //const ui = getUIState(this.context.store.getState());
+          //if (_.get(this.uiPath, ui) === undefined && opts.state) {
+          //  const state = this.getDefaultUIState(opts.state, nextProps);
+          //  this.props.setDefaultUI(this.uiPath, state);
+          //}
         }
 
         // Get default state by evaluating any functions passed in to the state
